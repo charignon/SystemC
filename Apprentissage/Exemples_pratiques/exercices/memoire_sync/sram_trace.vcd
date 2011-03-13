@@ -1,0 +1,174 @@
+$date
+     Mar 13, 2011       23:21:11
+$end
+
+$version
+              SystemC 2.2.0 --- Sep  1 2009 15:55:03
+$end
+
+$timescale
+     1 ps
+$end
+
+$scope module SystemC $end
+$var wire    1  aaa  clk       $end
+$var wire    8  aab  addr [7:0]  $end
+$var wire   16  aac  data_in [15:0]  $end
+$var wire   16  aad  data_out [15:0]  $end
+$var wire    1  aae  write       $end
+$upscope $end
+$enddefinitions  $end
+
+$comment
+All initial values are dumped below at time 0 sec = 0 timescale units.
+$end
+
+$dumpvars
+0aaa
+b10110 aab
+b100010 aac
+bXXXXXXXXXXXXXXXX aad
+1aae
+$end
+
+#1000
+1aaa
+
+#2000
+0aaa
+b10111 aab
+b101010 aac
+
+#3000
+1aaa
+
+#4000
+0aaa
+
+#5000
+1aaa
+
+#6000
+0aaa
+b11001 aab
+0aae
+
+#7000
+1aaa
+
+#8000
+0aaa
+b10110 aab
+
+#9000
+1aaa
+b100010 aad
+
+#10000
+0aaa
+
+#11000
+1aaa
+
+#12000
+0aaa
+
+#13000
+1aaa
+
+#14000
+0aaa
+
+#15000
+1aaa
+
+#16000
+0aaa
+
+#17000
+1aaa
+
+#18000
+0aaa
+
+#19000
+1aaa
+
+#20000
+0aaa
+
+#21000
+1aaa
+
+#22000
+0aaa
+
+#23000
+1aaa
+
+#24000
+0aaa
+
+#25000
+1aaa
+
+#26000
+0aaa
+
+#27000
+1aaa
+
+#28000
+0aaa
+
+#29000
+1aaa
+
+#30000
+0aaa
+
+#31000
+1aaa
+
+#32000
+0aaa
+
+#33000
+1aaa
+
+#34000
+0aaa
+
+#35000
+1aaa
+
+#36000
+0aaa
+
+#37000
+1aaa
+
+#38000
+0aaa
+
+#39000
+1aaa
+
+#40000
+0aaa
+
+#41000
+1aaa
+
+#42000
+0aaa
+
+#43000
+1aaa
+
+#44000
+0aaa
+
+#45000
+1aaa
+
