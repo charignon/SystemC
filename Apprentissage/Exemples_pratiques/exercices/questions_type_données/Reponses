@@ -1,0 +1,37 @@
+Question 1 
+==========
+Reprenez la RAM que vous avez modélisée au dernier chapitre. Avec vos connaissances actuelles, quels sont les types plus adaptés pour modéliser cette RAM (bus de données, bus d'adresses, tableau interne, ...) 
+
+
+
+Bus d'adresses : entiers non signés 16 bits.
+Bus de donnée :  entiers non signés ou signés 8 bits
+write :          bool
+clk :            bool
+
+
+Même question en remplaçant les deux bus de données par un seul bus bidirectionnel
+
+Dans ce cas, il faut gérer d'éventuels accés concurents avec des signaux à 4 états :
+
+
+Bus d'adresses : entiers non signés 16 bits.
+Bus de donnée :  entiers non signés ou signés 8 bits
+write :          bool
+clk :            bool
+
+
+Même question si les bus de données sont sur 16 bits, 32 bits, 23 bits, 64 bits.
+
+
+
+
+
+Question 3
+==========
+Tout dépend de la machine, on est juste assuré du minimum :
+char        minimum 8 bits
+short       minimum 8 bits
+int         minimum 16 bits
+long        minimum 32 bits
+long long   minimum 64 bits
