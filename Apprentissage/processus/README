@@ -1,0 +1,5 @@
+Il faut faire attention lorsqu'un SC_METHOD appelle les fonctions d'un canal. Certaines méthodes de canaux ne doivent jamais être appelées depuis un SC_METHOD. Donner un exemple de ce type de méthode interdite
+===================================================================================================================
+
+Il faut à tout pris éviter les appel bloquant dans une SC_METHOD. Ainsi, on ne doit pas par exemple attendre une sémaphore
+ou le remplissage d'une fifo à l'intérieur d'une SC_METHOD

@@ -1,1 +1,2 @@
-Je n'ai pas réussi à utiliser des variables à la place des signaux.
+Il est possible de faire communiquer des processus par des variables, mais c'est fortement déconseillé : les variables sont affectées immédiatement. L'ordre d'exécution des processus étant indéterminé...
+Donc dans ce cas on préfère utiliser des signaux que des variables.
