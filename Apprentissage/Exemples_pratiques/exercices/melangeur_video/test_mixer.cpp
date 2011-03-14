@@ -1,4 +1,4 @@
-//@Module : A module which gives the multiples of 2 and 3 as output
+//@Module : A module which mixes two pixels
 //@Author : Laurent Charignon
 //@Course : System C athens week, Telecom ParisTech 2001
 //@Date   : 13/03/2011
