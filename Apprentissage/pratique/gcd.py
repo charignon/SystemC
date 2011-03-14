@@ -1,7 +1,7 @@
 from fractions import *
 import csv
 
-csvfile = open("pgcd.csv", "rb")
+csvfile = open("pgcd_fsm.csv", "rb")
 dialect = csv.Sniffer().sniff(csvfile.read(1024))
 csvfile.seek(0)
 reader = csv.reader(csvfile, dialect)
