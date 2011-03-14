@@ -15,28 +15,28 @@ SC_MODULE(pgcd)
   sc_in<unsigned char > y;
   
   //output
-  sc_out<unsigned char > pgcd;
+  sc_out<unsigned char > out;
 
   //start the operation to determine the greatest common divider of x and y 
   sc_in <bool> start;
 
   //processing is done, pgcd contains the result
-  sc_in <bool> done;
+  sc_out <bool> done;
 
-  //internal signals
-  sc_signal<bool> _done;
-  sc_signal<unsigned char> inM;
-  sc_signal<unsigned char> inm;
-  sc_signal<unsigned char> inQ;
-  sc_signal<unsigned char> inR;
+  //internal variables
+  bool _done;
+  unsigned char  inM;
+  unsigned char  inm;
+  unsigned char  inQ;
+  unsigned char  inR;
 
   void proceed();
 
   SC_CTOR(pgcd)
   {
+    _done=false;
     SC_METHOD(proceed);
     sensitive << clk.pos();
-
   }
 
 };

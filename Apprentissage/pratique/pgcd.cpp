@@ -8,14 +8,16 @@
 void pgcd::proceed(){
 
   //If the processing hasn't been done and the module is told to start the operation
-  if (!_done & start)
+  if (!start)
+  {
+    _done ? done=true : done =false;
+    _done=false;
+  }
+  else
   {
     //ends up quickly if the two numbers are equals
     if(x.read()==y.read())
-    {
-      pgcd=x.read();
-      inm=x.read();//trick to spare a variable which stocks temporarly the pgcd
-    }
+      inm =x.read();//trick to spare a variable which stocks temporarly the pgcd
     else
     { 
       //get the maximum of x and y
@@ -23,34 +25,19 @@ void pgcd::proceed(){
       {inM=x.read(); inm=y.read();}
       else                       
       {inM=y.read(); inm=x.read();}
-
       do{
-        inQ=inM/inm;
-        inR=inM-inQ*inm;
-        inM=inm;
-        inm=inR;
+      inQ= (inM/inm);
+      inR=inM-inQ*inm;
+      if(inR!=0)
+      {
+      inM=inm;
+      inm=inR;
+      }
       }while(inR!=0);
-      pgcd=inm;
     }
-    _done=1;
-    done=1;
-    return;
+    out=(unsigned char) inm;
+    _done=true;
   }
-  else
-  {
-
-    if (_done)
-    {
-      _done=0;
-      done=true;
-      pgcd=inm;
-    }
-    else{
-      done=false;
-
-    }
-  }
-  done = true;
   return ;
 
 }
