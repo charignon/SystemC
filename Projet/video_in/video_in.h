@@ -18,6 +18,7 @@
 
 #include <systemc.h>
 #include "image.h"
+#include <png.h>
 
 
 ////////////////////////////////////////        

@@ -5,7 +5,8 @@
 
 
 // Une image est un tableau de pixels (unsigned char, pour une image en niveaux de gris)
-// On ne définit pas sa taille à l'avance, cela permettra de faire des simulations avec des images plus petites...
+// On ne définit pas sa taille à l'avance, cela perm414720
+// ettra de faire des simulations avec des images plus petites...
 typedef struct Image {
     int   width, height;  
     unsigned char  *pixel; 
