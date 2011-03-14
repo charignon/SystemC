@@ -1,10 +1,10 @@
-//@Module : Synchronous eight bits counter (mod 127)
+//@Module : A module which gives the multiples of 2 and 3 as output
 //@Author : Laurent Charignon
 //@Course : System C athens week, Telecom ParisTech 2001
 //@Date   : 13/03/2011
 
 #include "systemc.h"
-#include "counter.h"
+#include "multiples.h"
 
 void next_cycle (sc_signal<bool> &signal_clk);
 
@@ -17,15 +17,15 @@ int sc_main(int argc, char *argv[])
 
     sc_trace_file *my_trace_file;
     my_trace_file =
-        sc_create_vcd_trace_file ("counter_trace");
+        sc_create_vcd_trace_file ("multiples_trace");
     sc_trace(my_trace_file, clk, "clk");
     sc_trace(my_trace_file, reset, "reset");
     sc_trace(my_trace_file, data, "data");
 
-    count8mod127 count8mod127("8_bits_counter_mod_127");
-    count8mod127.clk(clk);
-    count8mod127.rst(reset);
-    count8mod127.out(data);
+    multiples multiples("2/3_multiples_display");
+    multiples.clk(clk);
+    multiples.rst(reset);
+    multiples.out(data);
 
     reset=0;
     next_cycle (clk);
