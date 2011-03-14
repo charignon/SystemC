@@ -1,0 +1,56 @@
+//@Module : A module which gives the greatest common divider of two integers
+//@Author : Laurent Charignon
+//@Course : System C athens week, Telecom ParisTech 2001
+//@Date   : 13/03/2011
+
+#include "pgcd.h"
+
+void pgcd::proceed(){
+
+  //If the processing hasn't been done and the module is told to start the operation
+  if (!_done & start)
+  {
+    //ends up quickly if the two numbers are equals
+    if(x.read()==y.read())
+    {
+      pgcd=x.read();
+      inm=x.read();//trick to spare a variable which stocks temporarly the pgcd
+    }
+    else
+    { 
+      //get the maximum of x and y
+      if(x.read()>y.read())      
+      {inM=x.read(); inm=y.read();}
+      else                       
+      {inM=y.read(); inm=x.read();}
+
+      do{
+        inQ=inM/inm;
+        inR=inM-inQ*inm;
+        inM=inm;
+        inm=inR;
+      }while(inR!=0);
+      pgcd=inm;
+    }
+    _done=1;
+    done=1;
+    return;
+  }
+  else
+  {
+
+    if (_done)
+    {
+      _done=0;
+      done=true;
+      pgcd=inm;
+    }
+    else{
+      done=false;
+
+    }
+  }
+  done = true;
+  return ;
+
+}
