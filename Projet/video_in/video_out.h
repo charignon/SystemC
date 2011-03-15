@@ -66,8 +66,11 @@ SC_MODULE(VIDEO_OUT)
       sensitive << reset_n.neg();
       SC_THREAD(write_image);
       sensitive << clk.pos();
+      SC_THREAD(average_filter);
+      sensitive << clk.pos();
       dont_initialize();
       flush=false;
+      filter=false;
       base_name = "output";
       current_image_number = 0;
       current_state=OUT_BEGIN;
@@ -80,15 +83,18 @@ SC_MODULE(VIDEO_OUT)
     }
 
   private: 
+    void average_filter();
     void read_flow();
     void write_image();
     const char* base_name;
     int current_image_number;
     bool flush;
+    bool filter;
     int line_number;
     int column_number;
     int current_state;
     int next_state;
+        
     };
 
 #endif

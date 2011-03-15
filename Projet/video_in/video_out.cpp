@@ -22,7 +22,6 @@ void VIDEO_OUT::read_flow()
 
     if(reset_n ==false)
     {
-    reset : //reset label, used later on as a goto target 
 //      flush=false;
       if(current_image_number !=0)
       {
@@ -61,9 +60,6 @@ void VIDEO_OUT::read_flow()
           {
             if(href.read())
             {
-              if (pixel_in < 200)
-              image.pixel[line_number*720+column_number]=pixel_in+50;
-              else
               image.pixel[line_number*720+column_number]=pixel_in;
               column_number++;
               next_state=GATHERING;
@@ -78,6 +74,8 @@ void VIDEO_OUT::read_flow()
                 next_state=OUT_BEGIN;
               }
               else{
+                if (line_number >=2)
+                  filter=true;
                 line_number ++;
                 next_state=OUT_MIDDLE;
               }
@@ -124,5 +122,34 @@ flush=false;
 }
 wait(1);
 }
-return;
+}
+
+
+void VIDEO_OUT::average_filter()
+{
+while(1)
+{
+if(filter)
+{
+//we filter in line line_number -2;
+int i;
+int i1=(line_number-3)*720;
+int i2=(line_number-2)*720;
+int i3=(line_number-1)*720;
+for (i=1;i<719;i++)
+{
+              image.pixel[i2+i]=
+                (image.pixel[i2+i-1]+
+                 image.pixel[i2+i+1]+
+                 image.pixel[i1+i-1]+
+                 image.pixel[i1+i-1]+
+                 image.pixel[i1+i]+
+                 image.pixel[i3+i+1]+
+                 image.pixel[i3+i-1]+
+                 image.pixel[i3+i])/8;
+}
+filter=false;
+}
+wait(1);
+}
 }
