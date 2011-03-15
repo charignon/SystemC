@@ -21,8 +21,8 @@ void AVERAGE_FILTER::filter()
   {
     if (reset_n == false)
     {
-      current_state=OUT_BEGIN;
-      next_state=OUT_BEGIN;
+      current_state=BEGIN;
+      next_state=BEGIN;
       wait();
     } 
     else
@@ -47,7 +47,7 @@ void AVERAGE_FILTER::filter()
                      {
 
                        buffer[reader]=pixel_in;
-                       reader++
+                       reader++;
                          if (reader==TOTALSIZE)
                          { 
                            next_state=SEND;
@@ -73,7 +73,7 @@ void AVERAGE_FILTER::filter()
                                   buffer[(NCOL + cursor-1)%TOTALSIZE]+
                                   buffer[(-NCOL + cursor+1+TOTALSIZE)%TOTALSIZE]+
                                   buffer[(-NCOL + cursor+TOTALSIZE)%TOTALSIZE]+
-                                  buffer[(-NCOL + cursor-1+TOTALSIZE)%TOTALSIZE])/9
+                                  buffer[(-NCOL + cursor-1+TOTALSIZE)%TOTALSIZE])/9;
                       cursor ++;
                       if(_href)
                       {
@@ -105,23 +105,10 @@ void AVERAGE_FILTER::filter()
                     break;
                   }
 
-
+      }
                    current_state=next_state;
                    wait();
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 

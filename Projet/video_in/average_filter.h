@@ -49,14 +49,13 @@ SC_MODULE(AVERAGE_FILTER)
       sensitive << clk.pos();
       sensitive << reset_n.neg();
       dont_initialize();
-      current_state=OUT_BEGIN;
-      next_state=OUT_BEGIN;
-      image.pixel = (unsigned char *)malloc(TOTALSIZE * sizeof(unsigned char));
+      current_state=BEGIN;
+      next_state=BEGIN;
       cout << "Successful Instanciation of AVERAGE FILTER module" << endl; 
       reader=0;
-      cursors=0;
+      cursor=0;
       line=0;
-      buffer = (unsigned char * ) malloc (sizeof(unsigned char) * NCOL + 3;
+      buffer = (unsigned char * ) malloc (sizeof(unsigned char) * NCOL + 3);
     }
 
   private: 
