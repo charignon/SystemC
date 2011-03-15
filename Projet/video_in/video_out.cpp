@@ -40,7 +40,9 @@ void VIDEO_OUT::read_flow()
           {
             if(href.read())
             {
-              image.pixel [line_number*720+column_number] = pixel_in;
+              image.pixel [(2*line_number)*1440+column_number] = pixel_in;
+              column_number++;
+              image.pixel [(2*line_number)*1440+column_number] = pixel_in;
               column_number++;
               next_state=GATHERING;
             }
@@ -60,7 +62,9 @@ void VIDEO_OUT::read_flow()
           {
             if(href.read())
             {
-              image.pixel[line_number*720+column_number]=pixel_in;
+              image.pixel [(2*line_number)*1440+column_number] = pixel_in;
+              column_number++;
+              image.pixel [(2*line_number)*1440+column_number] = pixel_in;
               column_number++;
               next_state=GATHERING;
             }
@@ -74,8 +78,8 @@ void VIDEO_OUT::read_flow()
                 next_state=OUT_BEGIN;
               }
               else{
-                if (line_number >=2)
-                  filter=true;
+                //if (line_number >=2)
+                //  filter=true;
                 line_number ++;
                 next_state=OUT_MIDDLE;
               }
@@ -88,7 +92,9 @@ void VIDEO_OUT::read_flow()
           {   
             if(href.read())
             {
-              image.pixel[line_number*720+column_number]=pixel_in;
+              image.pixel[(2*line_number)*1440+column_number]=pixel_in;
+              column_number++;
+              image.pixel[(2*line_number)*1440+column_number]=pixel_in;
               column_number++;
               next_state=GATHERING;
             }
@@ -113,8 +119,16 @@ while(1)
 if(flush)
 {
 char name[2048];
+int i;
+int j;
+for (i=0;i<1440;i++)
+  for (j=0;j<576;j++)
+    image.pixel[(2*j+1)*1440+i]=image.pixel[2*j*1440+i];
+
+
 line_number = 0; 
 column_number = 0; 
+
 sprintf(name,"%s%02d.png",base_name,current_image_number);
 image_write(&image,name);
 current_image_number++;

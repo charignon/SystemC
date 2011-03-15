@@ -25,7 +25,7 @@
 #define OUT_BEGIN 0
 #define OUT_MIDDLE 1
 #define GATHERING 2
-#define TOTALSIZE 414720
+#define TOTALSIZE 829440
 
 
 
@@ -76,8 +76,8 @@ SC_MODULE(VIDEO_OUT)
       current_state=OUT_BEGIN;
       next_state=OUT_BEGIN;
     image.pixel = (unsigned char *)malloc(TOTALSIZE * sizeof(unsigned char));
-    image.width=720;
-    image.height=576;
+    image.width=1440;
+    image.height=1152;
     cout << "Successful Instanciation of VIDEO_OUT module" << endl; 
 
     }
