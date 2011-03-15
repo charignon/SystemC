@@ -6,8 +6,5 @@
 #include "shift_register.h"
 
 void shift_register::proceed(){
-  
   out=in.read();
-
-
 }

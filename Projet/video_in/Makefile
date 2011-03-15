@@ -4,7 +4,7 @@ TARGET_ARCH	= linux64
 CXX         = g++
 LD	    = g++
 CXXFLAGS    = -Wall  -I. -isystem $(SYSTEMC)/include  -Wno-deprecated -O2 -g
-LDFLAGS	    =  -L$(SYSTEMC)/lib-$(TARGET_ARCH) 
+LDFLAGS	    =  -L$(SYSTEMC)/lib-$(TARGET_ARCH) -lm
 
 SOURCES_CPP = $(wildcard *.cpp)
 SOURCES_C   = $(wildcard *.c)

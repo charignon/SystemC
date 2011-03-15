@@ -11,7 +11,7 @@
 
 #include "systemc.h"
 #include "video_in.h"
-#include "video_out.h"
+#include "average_filter.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -47,7 +47,8 @@ int sc_main (int argc, char *argv[])
         sc_signal<bool>                 signal_resetn;
         
         sc_signal<bool>                 signal_vref, signal_href;
-        sc_signal<unsigned char>        signal_pixel;
+        sc_signal<bool>                 signal_vref2, signal_href2;
+        sc_signal<unsigned char>        signal_pixel,signal_pixel_out;
         
         
         
@@ -56,22 +57,25 @@ int sc_main (int argc, char *argv[])
 /////////////////////////////////////////////////////////
 
             VIDEO_IN video_in("VIDEO");
-            VIDEO_OUT video_out("_VIDEO");
+            AVERAGE_FILTER avr("_VIDEO");
 	
 //////////////////////////////////////////////////////////
 //	Connexion des composants
 //////////////////////////////////////////////////////////
  
             video_in.clk        (signal_clk);
-            video_out.clk        (signal_clk);
             video_in.reset_n    (signal_resetn);
-            video_out.reset_n    (signal_resetn);
             video_in.href       (signal_href);
-            video_out.href       (signal_href);
             video_in.vref       (signal_vref);
-            video_out.vref       (signal_vref);
-            video_out.pixel_in  (signal_pixel);
             video_in.pixel_out  (signal_pixel);
+            avr.clk        (signal_clk);
+            avr.reset_n    (signal_resetn);
+            avr._href       (signal_href);
+            avr._vref       (signal_vref);
+            avr.href       (signal_href2);
+            avr.vref       (signal_vref2);
+            avr.pixel_in  (signal_pixel);
+            avr.pixel_out  (signal_pixel_out);
 
             // open trace file
             sc_trace_file *my_trace_file;
@@ -83,8 +87,11 @@ int sc_main (int argc, char *argv[])
   
             // chronogrammes video
             sc_trace(my_trace_file, signal_href,        "href");
+            sc_trace(my_trace_file, signal_href2,        "href_");
+            sc_trace(my_trace_file, signal_vref2,        "vref_");
             sc_trace(my_trace_file, signal_vref,        "vref");
             sc_trace(my_trace_file, signal_pixel,       "pixel");
+            sc_trace(my_trace_file, signal_pixel_out,       "pixel_out");
 
             /* Initialisation de la simulation */
             signal_resetn = true;

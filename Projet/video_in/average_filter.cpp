@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-
+#include <math.h>
 #include "average_filter.h"
 
 
@@ -28,12 +28,11 @@ void AVERAGE_FILTER::filter()
     else
     {
       //Bound the pointer in the right size
-      cursor=cursor%TOTALSIZE;
-      reader=reader%TOTALSIZE;
-
-
+      cursor=cursor%(TOTALSIZE);
+      reader=reader%(TOTALSIZE);
+      
       switch(current_state){
-
+        
         //state before the start of the emission delayed by 1 line and 3 pixels
         case BEGIN:{  
                      //Generation of the outputs
@@ -43,22 +42,16 @@ void AVERAGE_FILTER::filter()
 
 
 
-                     if(_vref&&_href)
+                     if(_href)
                      {
-
                        buffer[reader]=pixel_in;
                        reader++;
-                         if (reader==TOTALSIZE)
-                         { 
-                           next_state=SEND;
-                         }
-                           else
-                           next_state=BEGIN;
                      }
+                    
+                     if (reader>=TOTALSIZE)
+                        next_state=SEND;
                      else
-                     {
-                       next_state=BEGIN;
-                     }
+                        next_state=BEGIN;
                      break;
                    }
 
@@ -79,29 +72,52 @@ void AVERAGE_FILTER::filter()
                       {
                        buffer[reader]=pixel_in;
                        reader++;
+                       next_state=SEND;
                       }
-                      if((cursor+TOTALSIZE-reader)%TOTALSIZE==NCOL+1)
-                        next_state=HOLD;
+                   //   else
+                    //  {
+                      else{
+                        col++;
+                        if (col==3){col=0;
+                        next_state=HOLD;}
+                       
                       else 
                         next_state=SEND;  
-                   break;
+                      }
+                      //  }
+                      break;
                    }
         case HOLD:{
                     href=0;
-                    vref=0;
+                    line < 3 ? vref=1: vref=0;//If we are in the 3 first line of a frame set the vref signal
+                    pixel_out=0;
+
                     if(_href)
-                    {buffer[reader]=pixel_in;
+                    {
+                     buffer[reader]=pixel_in;
+                     col++;
                      reader++;
-                    }
-                      if((cursor+TOTALSIZE-reader)%TOTALSIZE==NCOL-1)
-                      {
+                    
+                    if(col==3)
+                    {
+                        col=0;
                         line++;
                         next_state=SEND;
-                      }
+                    }
+
+                    }
                         else
-                        next_state=HOLD;
-
-
+                         next_state=HOLD;
+                    if(line==575)
+                    {
+                    cout << "new image" <<endl;
+                      for (cursor= 0; cursor<NCOL; cursor ++)
+                      buffer[cursor]=0;
+                    reader=NCOL;
+                    col=0;
+                    line=0;
+                    next_state=BEGIN;
+                    }
                     break;
                   }
 

@@ -12,8 +12,8 @@
 #include "systemc.h"
 #include "image.h"
 #include <png.h>
-#define NCOL 576
-#define TOTALSIZE 2*576+1
+#define NCOL 720
+#define TOTALSIZE (2*720+2)
 #define BEGIN   0
 #define SEND    1
 #define HOLD    2
@@ -52,10 +52,14 @@ SC_MODULE(AVERAGE_FILTER)
       current_state=BEGIN;
       next_state=BEGIN;
       cout << "Successful Instanciation of AVERAGE FILTER module" << endl; 
-      reader=0;
+      reader=NCOL;
       cursor=0;
+      col=0;
       line=0;
-      buffer = (unsigned char * ) malloc (sizeof(unsigned char) * NCOL + 3);
+      buffer = (unsigned char * ) malloc (sizeof(unsigned char)* TOTALSIZE);
+      for (cursor= 0; cursor<NCOL; cursor ++)
+        buffer[cursor]=0;
+  
     }
 
   private: 
@@ -63,7 +67,8 @@ SC_MODULE(AVERAGE_FILTER)
     int current_state;
     int next_state;
     int reader;       
-    int line;       
+    int line; 
+    int col;    
     int cursor;       
     unsigned char* buffer; 
     };
