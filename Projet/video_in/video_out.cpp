@@ -9,7 +9,6 @@
 // 
 /////////////////////////////////////////////////////////////////////////
 
-#define TOTALSIZE 414720
 #include <stdio.h>
 #include <png.h>
 #include "video_out.h"
@@ -18,14 +17,13 @@
 
 void VIDEO_OUT::read_flow()
 {
-
   while(1)
   {
 
     if(reset_n ==false)
     {
-reset : //reset label, used later on as a goto target 
-      flush=false;
+    reset : //reset label, used later on as a goto target 
+//      flush=false;
       line_number = 0; 
       column_number = 0; 
       if(current_image_number !=0)
@@ -34,29 +32,28 @@ reset : //reset label, used later on as a goto target
           //TODO add a code to handle reset at halfway
       }
     image.pixel = (unsigned char *)malloc(TOTALSIZE * sizeof(unsigned char));
-      wait();
-      current_state=OUT_BEGIN;
+    current_state=OUT_BEGIN;
       next_state=OUT_BEGIN;
+      wait();
     }
     else{
-      current_state=next_state;
 
       switch(current_state){
-
-
         case OUT_BEGIN:
           {
-            if(href && vref )
+            if(href.read())
             {
-              image.pixel[line_number*720+column_number]=pixel_in;
+              image.pixel [line_number*720+column_number] = 2;//int(pixel_in.read());
               column_number++;
               next_state=GATHERING;
             }
             else
             {
-              if(href || vref)
+      line_number = 0; 
+      column_number = 0; 
+              /*if(href || vref)
                 cout <<"erreur de format";
-              else
+              else*/
                 next_state=OUT_BEGIN;
             }
             break;
@@ -64,7 +61,7 @@ reset : //reset label, used later on as a goto target
 
         case GATHERING:
           {
-            if(href)
+            if(href.read())
             {
               image.pixel[line_number*720+column_number]=pixel_in;
               column_number++;
@@ -90,7 +87,7 @@ reset : //reset label, used later on as a goto target
 
         case OUT_MIDDLE:
           {   
-            if(href)
+            if(href.read())
             {
               image.pixel[line_number*720+column_number]=pixel_in;
               column_number++;
@@ -102,7 +99,8 @@ reset : //reset label, used later on as a goto target
             }
             break;}
       }
-
+      current_state=next_state;
+      wait();
     }
   }
 }   
@@ -111,13 +109,16 @@ reset : //reset label, used later on as a goto target
 
 void VIDEO_OUT::write_image()
 {
+while(1)
+{
 if(flush)
 {
-  line_number = 0; 
+line_number = 0; 
 column_number = 0; 
 image_write(&image,"salut.png");
 flush=false;
 }
-wait();
+wait(1);
+}
 return;
 }

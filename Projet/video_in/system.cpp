@@ -11,6 +11,7 @@
 
 #include "systemc.h"
 #include "video_in.h"
+#include "video_out.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -55,15 +56,21 @@ int sc_main (int argc, char *argv[])
 /////////////////////////////////////////////////////////
 
             VIDEO_IN video_in("VIDEO");
+            VIDEO_OUT video_out("_VIDEO");
 	
 //////////////////////////////////////////////////////////
 //	Connexion des composants
 //////////////////////////////////////////////////////////
  
             video_in.clk        (signal_clk);
+            video_out.clk        (signal_clk);
             video_in.reset_n    (signal_resetn);
+            video_out.reset_n    (signal_resetn);
             video_in.href       (signal_href);
+            video_out.href       (signal_href);
             video_in.vref       (signal_vref);
+            video_out.vref       (signal_vref);
+            video_out.pixel_in  (signal_pixel);
             video_in.pixel_out  (signal_pixel);
 
             // open trace file

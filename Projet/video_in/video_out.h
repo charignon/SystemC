@@ -25,6 +25,7 @@
 #define OUT_BEGIN 0
 #define OUT_MIDDLE 1
 #define GATHERING 2
+#define TOTALSIZE 414720
 
 
 
@@ -51,6 +52,7 @@ SC_MODULE(VIDEO_OUT)
     sc_in<bool>        vref;
     
     sc_in<unsigned char> pixel_in;
+
     Image image;
     
 ////////////////////////////////////
@@ -68,8 +70,12 @@ SC_MODULE(VIDEO_OUT)
       flush=false;
       base_name = "output";
       current_image_number = 0;
-
-      cout << "Successful Instanciation of VIDEO_OUT module" << endl; 
+      current_state=OUT_BEGIN;
+      next_state=OUT_BEGIN;
+    image.pixel = (unsigned char *)malloc(TOTALSIZE * sizeof(unsigned char));
+    image.width=720;
+    image.height=576;
+    cout << "Successful Instanciation of VIDEO_OUT module" << endl; 
 
     }
 
