@@ -27,82 +27,102 @@ void AVERAGE_FILTER::filter()
     } 
     else
     {
+      //Bound the pointer in the right size
+      cursor=cursor%TOTALSIZE;
+      reader=reader%TOTALSIZE;
 
 
       switch(current_state){
 
-        case OUT_BEGIN:{
-            href=0;
-            vref=0;
+        //state before the start of the emission delayed by 1 line and 3 pixels
+        case BEGIN:{  
+                     //Generation of the outputs
+                      pixel_out   =0;
+                      href        =0;
+                      vref        =0;
 
-                         if(_vref)
-            {buffer[loaded]=pixel_in;
-              loaded++;
-              next_state=LOADING;
-            }
-            else{
-              next_state=OUT_BEGIN;
-            }
-          break;
-        }
 
-        case LOADING:
-          {
-            href=0;
-            vref=0;
-            if(_href)
-            {
-              buffer[loaded]=pixel_in;
-              loaded++;
-              if(loaded==READY)
-              {
-                loaded=0;
-                next_state=PROCESSING;
-              }
-                else next_state=LOADING;
-            }
-            else
-            {
-              next_state=LOADING;
-            }            
-            break;
-          }
-        
-        
-        
-        
+
+                     if(_vref&&_href)
+                     {
+
+                       buffer[reader]=pixel_in;
+                       reader++
+                         if (reader==TOTALSIZE)
+                         { 
+                           next_state=SEND;
+                         }
+                           else
+                           next_state=BEGIN;
+                     }
+                     else
+                     {
+                       next_state=BEGIN;
+                     }
+                     break;
+                   }
+
         case SEND:
-          {
-            href=1;
-            vref=1;
-              if (cursor == 0 )
-              {
+                  {   href=1;
+                      line < 3 ? vref=1: vref=0;//If we are in the 3 first line of a frame set the vref signal
+                      pixel_out=  (buffer[(cursor-1)%TOTALSIZE]+
+                                  buffer[(cursor)%TOTALSIZE]+
+                                  buffer[(cursor+1)%TOTALSIZE]+
+                                  buffer[(NCOL + cursor+1)%TOTALSIZE]+
+                                  buffer[(NCOL + cursor)%TOTALSIZE]+
+                                  buffer[(NCOL + cursor-1)%TOTALSIZE]+
+                                  buffer[(-NCOL + cursor+1+TOTALSIZE)%TOTALSIZE]+
+                                  buffer[(-NCOL + cursor+TOTALSIZE)%TOTALSIZE]+
+                                  buffer[(-NCOL + cursor-1+TOTALSIZE)%TOTALSIZE])/9
+                      cursor ++;
+                      if(_href)
+                      {
+                       buffer[reader]=pixel_in;
+                       reader++;
+                      }
+                      if((cursor+TOTALSIZE-reader)%TOTALSIZE==NCOL+1)
+                        next_state=HOLD;
+                      else 
+                        next_state=SEND;  
+                   break;
+                   }
+        case HOLD:{
+                    href=0;
+                    vref=0;
+                    if(_href)
+                    {buffer[reader]=pixel_in;
+                     reader++;
+                    }
+                      if((cursor+TOTALSIZE-reader)%TOTALSIZE==NCOL-1)
+                      {
+                        line++;
+                        next_state=SEND;
+                      }
+                        else
+                        next_state=HOLD;
 
-              }
 
-              else{
-              pixel.out=buffer[cursor-1]+
-                        buffer[cursor]+
-                        buffer[cursor+1]+
-                        buffer[NCOL+cursor+1]+
-                        buffer[NCOL+cursor+1]+
-                        buffer[NCOL+cursor+1]+
-                        buffer[2*NCOL+cursor-1]+
-                        buffer[2*NCOL+cursor]+
-                        buffer[2*NCOL+cursor+1]+
-            }
+                    break;
+                  }
 
 
-
-          break;}
-          
-
-
-
+                   current_state=next_state;
+                   wait();
       }
 
-      current_state=next_state;
-      wait();
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -118,29 +138,14 @@ void AVERAGE_FILTER::filter()
 
 
 
+
+
+
+
+
+
+
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
 
 
 

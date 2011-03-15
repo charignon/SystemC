@@ -13,8 +13,10 @@
 #include "image.h"
 #include <png.h>
 #define NCOL 576
-#define READY 2*576+1
-
+#define TOTALSIZE 2*576+1
+#define BEGIN   0
+#define SEND    1
+#define HOLD    2
 
 /////////////////////////////////////
 // structure definition
@@ -51,8 +53,9 @@ SC_MODULE(AVERAGE_FILTER)
       next_state=OUT_BEGIN;
       image.pixel = (unsigned char *)malloc(TOTALSIZE * sizeof(unsigned char));
       cout << "Successful Instanciation of AVERAGE FILTER module" << endl; 
-      loaded=0;
+      reader=0;
       cursors=0;
+      line=0;
       buffer = (unsigned char * ) malloc (sizeof(unsigned char) * NCOL + 3;
     }
 
@@ -60,7 +63,8 @@ SC_MODULE(AVERAGE_FILTER)
     void filter();
     int current_state;
     int next_state;
-    int loaded;       
+    int reader;       
+    int line;       
     int cursor;       
     unsigned char* buffer; 
     };
