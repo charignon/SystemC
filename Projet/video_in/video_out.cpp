@@ -24,8 +24,6 @@ void VIDEO_OUT::read_flow()
     {
     reset : //reset label, used later on as a goto target 
 //      flush=false;
-      line_number = 0; 
-      column_number = 0; 
       if(current_image_number !=0)
       {
         current_image_number = 0;
@@ -43,7 +41,7 @@ void VIDEO_OUT::read_flow()
           {
             if(href.read())
             {
-              image.pixel [line_number*720+column_number] = 2;//int(pixel_in.read());
+              image.pixel [line_number*720+column_number] = pixel_in;
               column_number++;
               next_state=GATHERING;
             }
@@ -63,6 +61,9 @@ void VIDEO_OUT::read_flow()
           {
             if(href.read())
             {
+              if (pixel_in < 200)
+              image.pixel[line_number*720+column_number]=pixel_in+50;
+              else
               image.pixel[line_number*720+column_number]=pixel_in;
               column_number++;
               next_state=GATHERING;
@@ -113,9 +114,12 @@ while(1)
 {
 if(flush)
 {
+char name[2048];
 line_number = 0; 
 column_number = 0; 
-image_write(&image,"salut.png");
+sprintf(name,"%s%02d.png",base_name,current_image_number);
+image_write(&image,name);
+current_image_number++;
 flush=false;
 }
 wait(1);
